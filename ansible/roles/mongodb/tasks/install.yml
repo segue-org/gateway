@@ -1,0 +1,23 @@
+---
+
+- name: MongoDB | Fetch 10Gen signing key
+  tags: mongodb
+  command: apt-key adv --keyserver keyserver.ubuntu.com --recv 7F0CEB10
+
+- name: MongoDB | Add 10Gen repository
+  tags: mongodb
+  lineinfile: line='deb http://downloads-distro.mongodb.org/repo/debian-sysvinit dist 10gen'
+              dest=/etc/apt/sources.list.d/mongodb.list
+              state=present
+              create=yes
+
+- name: Install latest MongoDB release
+  tags: mongodb
+  apt: pkg=mongodb
+       state=present
+       update_cache=yes
+
+- name: Ensure deamon is running correctly
+  tags: mongodb
+  service: name=mongodb
+           state=started
